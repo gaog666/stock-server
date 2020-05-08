@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xnpool.scheduler.quartz.mapper.JobEntityMapper">
+	<resultMap id="BaseResultMap" type="com.xnpool.scheduler.quartz.entity.JobEntity">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="job_name" property="jobName" jdbcType="VARCHAR" />
+		<result column="job_group" property="jobGroup" jdbcType="VARCHAR" />
+		<result column="cron" property="cron" jdbcType="VARCHAR" />
+		<result column="parameter" property="parameter" jdbcType="VARCHAR" />
+		<result column="description" property="description" jdbcType="VARCHAR" />
+		<result column="vm_param" property="vmParam" jdbcType="VARCHAR" />
+		<result column="jar_path" property="jarPath" jdbcType="VARCHAR" />
+		<result column="exe_class" property="exeClass" jdbcType="VARCHAR" />
+		<result column="status" property="status" jdbcType="VARCHAR" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		id,
+		job_name,
+		job_group,
+		cron,
+		parameter,
+		description,
+		vm_param,
+		jar_path,
+		exe_class,
+		status
+	</sql>
+	<sql id="Example_Where_Clause">
+		<where>
+				<if test="id != null">
+					id = #{id,jdbcType=INTEGER}
+				</if>
+				<if test="jobName != null and jobName !=''">
+					and job_name = #{jobName,jdbcType=VARCHAR}
+				</if>
+				<if test="jobGroup != null and jobGroup !=''">
+					and job_group = #{jobGroup,jdbcType=VARCHAR}
+				</if>
+				<if test="cron != null and cron !=''">
+					and cron = #{cron,jdbcType=VARCHAR}
+				</if>
+				<if test="parameter != null and parameter !=''">
+					and parameter = #{parameter,jdbcType=VARCHAR}
+				</if>
+				<if test="description != null and description !=''">
+					and description = #{description,jdbcType=VARCHAR}
+				</if>
+				<if test="vmParam != null and vmParam !=''">
+					and vm_param = #{vmParam,jdbcType=VARCHAR}
+				</if>
+				<if test="jarPath != null and jarPath !=''">
+					and jar_path = #{jarPath,jdbcType=VARCHAR}
+				</if>
+				<if test="exeClass != null and exeClass !=''">
+					and exe_class = #{exeClass,jdbcType=VARCHAR}
+				</if>
+				<if test="status != null and status !=''">
+					and status = #{status,jdbcType=VARCHAR}
+				</if>
+    </where>
+	</sql>
+	
+	<select id="countByExample" resultType="java.lang.Integer" parameterType="com.xnpool.scheduler.quartz.entity.JobEntity">
+		select count(*) from job_entity
+		<if test="_parameter != null" >
+	      <include refid="Example_Where_Clause" />
+	    </if>
+	</select>
+	
+	<select id="selectByExample" resultMap="BaseResultMap" parameterType="com.xnpool.scheduler.quartz.entity.JobEntity">
+		select
+		<include refid="Base_Column_List" />
+		from job_entity
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+	</select>
+	
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from job_entity
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+	
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from job_entity
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+
+	<insert id="insertSelective" parameterType="com.xnpool.scheduler.quartz.entity.JobEntity">
+		<selectKey resultType="java.lang.Integer" keyProperty="id"
+			order="BEFORE">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		insert into job_entity
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="jobName != null">
+				job_name,
+			</if>
+			<if test="jobGroup != null">
+				job_group,
+			</if>
+			<if test="cron != null">
+				cron,
+			</if>
+			<if test="parameter != null">
+				parameter,
+			</if>
+			<if test="description != null">
+				description,
+			</if>
+			<if test="vmParam != null">
+				vm_param,
+			</if>
+			<if test="jarPath != null">
+				jar_path,
+			</if>
+			<if test="exeClass != null">
+				exe_class,
+			</if>
+			<if test="status != null">
+				status,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=INTEGER},
+			</if>
+			<if test="jobName != null">
+				#{jobName,jdbcType=VARCHAR},
+			</if>
+			<if test="jobGroup != null">
+				#{jobGroup,jdbcType=VARCHAR},
+			</if>
+			<if test="cron != null">
+				#{cron,jdbcType=VARCHAR},
+			</if>
+			<if test="parameter != null">
+				#{parameter,jdbcType=VARCHAR},
+			</if>
+			<if test="description != null">
+				#{description,jdbcType=VARCHAR},
+			</if>
+			<if test="vmParam != null">
+				#{vmParam,jdbcType=VARCHAR},
+			</if>
+			<if test="jarPath != null">
+				#{jarPath,jdbcType=VARCHAR},
+			</if>
+			<if test="exeClass != null">
+				#{exeClass,jdbcType=VARCHAR},
+			</if>
+			<if test="status != null">
+				#{status,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+
+	<update id="updateByPrimaryKey" parameterType="com.xnpool.scheduler.quartz.entity.JobEntity">
+		update job_entity
+		set 
+		job_name = #{jobName,jdbcType=VARCHAR},	
+		job_group = #{jobGroup,jdbcType=VARCHAR},	
+		cron = #{cron,jdbcType=VARCHAR},	
+		parameter = #{parameter,jdbcType=VARCHAR},	
+		description = #{description,jdbcType=VARCHAR},	
+		vm_param = #{vmParam,jdbcType=VARCHAR},	
+		jar_path = #{jarPath,jdbcType=VARCHAR},	
+		exe_class = #{exeClass,jdbcType=VARCHAR},	
+		status = #{status,jdbcType=VARCHAR}	
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+</mapper>
