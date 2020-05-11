@@ -1,0 +1,25 @@
+最近资金流向
+http://push2.eastmoney.com/api/qt/ulist.np/get?fltt=2&secids=1.601598&fields=f62,f184,f66,f69,f72,f75,f78,f81,f84,f87,f64,f65,f70,f71,f76,f77,f82,f83,f164,f166,f168,f170,f172,f252,f253,f254,f255,f256,f124,f6,f278,f279,f280,f281,f282&ut=b2884a393a59ad64002292a3e90d46a5&cb=jQuery18307929808541716463_1582552615955&_=1582552616119
+
+详细
+http://push2his.eastmoney.com/api/qt/stock/fflow/daykline/get?lmt=0&klt=101&secid=1.601598&fields1=f1,f2,f3,f7&fields2=f51,f52,f53,f54,f55,f56,f57,f58,f59,f60,f61,f62,f63,f64,f65&ut=b2884a393a59ad64002292a3e90d46a5&cb=jQuery18301170525704351566_1582558549941&_=1582558550168
+
+
+http://push2.eastmoney.com/api/qt/stock/get?
+ut=fa5fd1943c7b386f172d6893dbfba10b&invt=2&fltt=2&
+fields=f43,f57,f58,f169,f170,f46,f44,f51,f168,f47,f164,f163,f116,f60,f45,f52,f50,f48,f167,f117,f71,f161,f49,f530,f135,f136,f137,f138,f139,f141,f142,f144,f145,f147,f148,f140,f143,f146,f149,f55,f62,f162,f92,f173,f104,f105,f84,f85,f183,f184,f185,f186,f187,f188,f189,f190,f191,f192,f107,f111,f86,f177,f78,f110,f262,f263,f264,f267,f268,f250,f251,f252,f253,f254,f255,f256,f257,f258,f266,f269,f270,f271,f273,f274,f275,f127,f199,f128,f193,f196,f194,f195,f197,f80,f280,f281,f282,f284,f285,f286,f287
+&secid=0.002605&cb=jQuery112405414872600842968_1587193823713&_=1587193823714
+
+http://push2.eastmoney.com/api/qt/stock/get?
+ut=fa5fd1943c7b386f172d6893dbfba10b&invt=2&fltt=2&fields=f43,f57,f58,f169,f170,f46,f44,f51,f168,f47,f164,f163,f116,f60,f45,f52,f50,f48,f167,f117,f71,f161,f49,f530,f135,f136,f137,f138,f139,f141,f142,f144,f145,f147,f148,f140,f143,f146,f149,f55,f62,f162,f92,f173,f104,f105,f84,f85,f183,f184,f185,f186,f187,f188,f189,f190,f191,f192,f107,f111,f86,f177,f78,f110,f262,f263,f264,f267,f268,f250,f251,f252,f253,f254,f255,f256,f257,f258,f266,f269,f270,f271,f273,f274,f275,f127,f199,f128,f193,f196,f194,f195,f197,f80,f280,f281,f282,f284,f285,f286,f287
+&secid=0.002605&cb=jQuery1124014653070091256182_1587197685850&_=1587197685860
+
+select f57, f58 as "名称",f43 as "当前价",f170 as "涨幅%",f50 as "量比", f168 as "换手率%",
+FORMAT(f116/100000000,2) as "总市值(亿)", FORMAT(f49/1000-f161/1000,3) as "外-内盘" ,
+FORMAT(f135/10000,2) as "主力流入",FORMAT(f137/10000,2) as "净流入", FORMAT(f137/f135,4)  ,update_time
+from stock_base_history
+where  update_time > DATE_SUB(now(),INTERVAL 1 DAY)  and f116 < 10000000000 and f168>10 and f43>10 and f49>f161
+and f137>0 ORDER BY f170
+
+
+update stock_base_history set update_time="2020-04-27 16:00:00" where update_time>"2020-04-25 16:00:00"

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xnpool.scheduler.stock.mapper.StockOpenScreenMapper">
+	<resultMap id="BaseResultMap" type="com.xnpool.scheduler.stock.entity.StockOpenScreen">
+		<id column="id" property="id" jdbcType="BIGINT" />
+		<result column="f57" property="f57" jdbcType="VARCHAR" />
+		<result column="f58" property="f58" jdbcType="VARCHAR" />
+		<result column="f43" property="f43" jdbcType="VARCHAR" />
+		<result column="f71" property="f71" jdbcType="VARCHAR" />
+		<result column="f170" property="f170" jdbcType="VARCHAR" />
+		<result column="f169" property="f169" jdbcType="VARCHAR" />
+		<result column="f60" property="f60" jdbcType="VARCHAR" />
+		<result column="f46" property="f46" jdbcType="VARCHAR" />
+		<result column="f44" property="f44" jdbcType="VARCHAR" />
+		<result column="f45" property="f45" jdbcType="VARCHAR" />
+		<result column="f47" property="f47" jdbcType="VARCHAR" />
+		<result column="f50" property="f50" jdbcType="VARCHAR" />
+		<result column="f168" property="f168" jdbcType="VARCHAR" />
+		<result column="f162" property="f162" jdbcType="VARCHAR" />
+		<result column="f116" property="f116" jdbcType="VARCHAR" />
+		<result column="f117" property="f117" jdbcType="VARCHAR" />
+		<result column="f167" property="f167" jdbcType="VARCHAR" />
+		<result column="f135" property="f135" jdbcType="VARCHAR" />
+		<result column="f136" property="f136" jdbcType="VARCHAR" />
+		<result column="f137" property="f137" jdbcType="VARCHAR" />
+		<result column="f49" property="f49" jdbcType="VARCHAR" />
+		<result column="f161" property="f161" jdbcType="VARCHAR" />
+		<result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+	</resultMap>
+	
+</mapper>

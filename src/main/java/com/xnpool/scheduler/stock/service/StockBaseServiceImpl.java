@@ -13,6 +13,7 @@ import com.xnpool.scheduler.quartz.manage.StringUtils;
 import com.xnpool.scheduler.stock.constant.StockRedisKey;
 import com.xnpool.scheduler.stock.entity.StockBase;
 import com.xnpool.scheduler.stock.mapper.StockBaseMapper;
+import com.xnpool.scheduler.stock.utils.StockHttpUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.cache.CacheProperties;
 import org.springframework.scheduling.annotation.Async;
@@ -44,11 +45,7 @@ public class StockBaseServiceImpl extends ServiceImpl<StockBaseMapper, StockBase
         Set<Object> objects = redisUtil.sGet(StockRedisKey.STOCK_BASE_CODE_0);
         Set<StockBase> list= new HashSet<>();
         objects.parallelStream().forEach(item -> {
-            String stockUrl = paramConstant.getStockUrl0().replace("@code", item.toString()).replace("@time", (new Date().getTime() + 10) + "");
-            String jsonStr = HttpUtil.sendGet(stockUrl);
-            jsonStr = jsonStr.substring(jsonStr.indexOf("(") + 1, jsonStr.indexOf(")"));
-            String jsonStock = JSONObject.parseObject(jsonStr).getString("data");
-            StockBase base = JSONObject.parseObject(jsonStock, StockBase.class);
+            StockBase base = StockHttpUtil.getStockBase(item, paramConstant.getStockUrl0());
             base.setUpdateTime(new Date());
             list.add(base);
 
@@ -63,11 +60,7 @@ public class StockBaseServiceImpl extends ServiceImpl<StockBaseMapper, StockBase
 
         Set<StockBase> list= new HashSet<>();
         objects.parallelStream().forEach(item -> {
-            String stockUrl = paramConstant.getStockUrl6().replace("@code", item.toString()).replace("@time", (new Date().getTime() + 10) + "");
-            String jsonStr = HttpUtil.sendGet(stockUrl);
-            jsonStr = jsonStr.substring(jsonStr.indexOf("(") + 1, jsonStr.indexOf(")"));
-            String jsonStock = JSONObject.parseObject(jsonStr).getString("data");
-            StockBase base = JSONObject.parseObject(jsonStock, StockBase.class);
+            StockBase base = StockHttpUtil.getStockBase(item, paramConstant.getStockUrl6());
             base.setUpdateTime(new Date());
             list.add(base);
         });
@@ -76,10 +69,14 @@ public class StockBaseServiceImpl extends ServiceImpl<StockBaseMapper, StockBase
     }
     @Override
     public String readStockBase() {
+
         for (int i = 1; i < 4000; i++) {
+
             DecimalFormat df = new DecimalFormat("00000");
             String code = "0"+df.format(i);
-
+            if(redisUtil.sHasKey(StockRedisKey.STOCK_BASE_CODE_0, code)){
+                continue;
+            }
             String stockUrl = paramConstant.getStockUrl0().replace("@code", code).replace("@time", (new Date().getTime() + 10) + "");
             String jsonStr = HttpUtil.sendGet(stockUrl);
             jsonStr = jsonStr.substring(jsonStr.indexOf("(") + 1, jsonStr.indexOf(")"));
@@ -98,7 +95,9 @@ public class StockBaseServiceImpl extends ServiceImpl<StockBaseMapper, StockBase
         for (int i = 1; i < 4100; i++) {
             DecimalFormat df = new DecimalFormat("00000");
             String code = "6"+df.format(i);
-
+            if(redisUtil.sHasKey(StockRedisKey.STOCK_BASE_CODE_1, code)){
+                continue;
+            }
             String stockUrl = paramConstant.getStockUrl6().replace("@code", code).replace("@time", (new Date().getTime() + 10) + "");
             String jsonStr = HttpUtil.sendGet(stockUrl);
             jsonStr = jsonStr.substring(jsonStr.indexOf("(") + 1, jsonStr.indexOf(")"));
