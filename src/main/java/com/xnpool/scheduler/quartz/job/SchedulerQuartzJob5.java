@@ -32,14 +32,15 @@ public class SchedulerQuartzJob5 implements Job {
         // TODO 业务
         try {
             Calendar calendar= Calendar.getInstance();
+            calendar.setTime(new Date());
             int week = calendar.get(Calendar.DAY_OF_WEEK) - 1;
             if(!(week ==6 || week ==7)) {
-                // 9:30 - 15:00
+                // 9:25 - 15:00
                 calendar.set(Calendar.HOUR,9);
-                calendar.set(Calendar.MINUTE,30);
+                calendar.set(Calendar.MINUTE,25);
                 Date start = calendar.getTime();
-                calendar.set(Calendar.HOUR,14);
-                calendar.set(Calendar.MINUTE,55);
+                calendar.set(Calendar.HOUR,15);
+                calendar.set(Calendar.MINUTE,00);
                 Date end =calendar.getTime();
                 Date now = new Date();
 

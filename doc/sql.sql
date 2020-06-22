@@ -83,3 +83,11 @@ CREATE TABLE `stock_open_screen` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COMMENT='开盘前';
 
+CREATE TABLE `stock_custom_code` (
+  `id` bigint(64) NOT NULL AUTO_INCREMENT,
+  `f57` varchar(10) NOT NULL DEFAULT '000000' COMMENT '股票代码',
+  `price` varchar(10) DEFAULT '0' COMMENT '提醒价格',
+  `update_time` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COMMENT='自选股';
+
