@@ -1,9 +1,8 @@
 /**
  * 版权声明： 版权所有 违者必究 2020
-*/
+ */
 package com.xnpool.scheduler.stock.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;

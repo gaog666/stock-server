@@ -1,6 +1,6 @@
 /**
  * 版权声明： 版权所有 违者必究 2020
-*/
+ */
 package com.xnpool.scheduler.stock.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;

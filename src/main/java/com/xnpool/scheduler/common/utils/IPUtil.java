@@ -10,23 +10,24 @@ public class IPUtil {
 
     /**
      * 获取Ip地址
+     *
      * @param request
      * @return
      */
     public static String getIpAddr(HttpServletRequest request) {
         String Xip = request.getHeader("X-Real-IP");
         String XFor = request.getHeader("X-Forwarded-For");
-        if(StringUtils.isNotEmpty(XFor) && !"unKnown".equalsIgnoreCase(XFor)){
+        if (StringUtils.isNotEmpty(XFor) && !"unKnown".equalsIgnoreCase(XFor)) {
             //多次反向代理后会有多个ip值，第一个ip才是真实ip
             int index = XFor.indexOf(",");
-            if(index != -1){
-                return XFor.substring(0,index);
-            }else{
+            if (index != -1) {
+                return XFor.substring(0, index);
+            } else {
                 return XFor;
             }
         }
         XFor = Xip;
-        if(StringUtils.isNotEmpty(XFor) && !"unKnown".equalsIgnoreCase(XFor)){
+        if (StringUtils.isNotEmpty(XFor) && !"unKnown".equalsIgnoreCase(XFor)) {
             return XFor;
         }
         if (StringUtils.isBlank(XFor) || "unknown".equalsIgnoreCase(XFor)) {

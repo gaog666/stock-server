@@ -91,7 +91,7 @@ public class HttpUtil {
         return result.toString();
     }
 
-    public static String sendGet(String url){
+    public static String sendGet(String url) {
         StringBuilder result = new StringBuilder();
         BufferedReader in = null;
         try {

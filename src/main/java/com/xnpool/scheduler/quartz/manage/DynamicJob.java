@@ -18,8 +18,10 @@ import java.util.List;
 @Component
 public class DynamicJob implements Job {
     private Logger logger = LoggerFactory.getLogger(DynamicJob.class);
+
     /**
      * 核心方法,Quartz Job真正的执行逻辑.
+     *
      * @param executorContext executorContext JobExecutionContext中封装有Quartz运行所需要的所有信息
      * @throws JobExecutionException execute()方法只允许抛出JobExecutionException异常
      */
@@ -65,6 +67,7 @@ public class DynamicJob implements Job {
         long endTime = System.currentTimeMillis();
         logger.info(">>>>>>>>>>>>> Running Job has been completed , cost time :  " + (endTime - startTime) + "ms\n");
     }
+
     //打印Job执行内容的日志
     private void logProcess(InputStream inputStream, InputStream errorStream) throws IOException {
         String inputLine;

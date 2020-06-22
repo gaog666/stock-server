@@ -28,9 +28,11 @@ public class ConfigureQuartz {
         jobFactory.setApplicationContext(applicationContext);
         return jobFactory;
     }
+
     /**
      * SchedulerFactoryBean这个类的真正作用提供了对org.quartz.Scheduler的创建与配置，并且会管理它的生命周期与Spring同步。
      * org.quartz.Scheduler: 调度器。所有的调度都是由它控制。
+     *
      * @param dataSource 为SchedulerFactory配置数据源
      * @param jobFactory 为SchedulerFactory配置JobFactory
      */
@@ -45,6 +47,7 @@ public class ConfigureQuartz {
         factory.setQuartzProperties(quartzProperties());
         return factory;
     }
+
     //从quartz.properties文件中读取Quartz配置属性
     @Bean
     public Properties quartzProperties() throws IOException {
@@ -53,14 +56,17 @@ public class ConfigureQuartz {
         propertiesFactoryBean.afterPropertiesSet();
         return propertiesFactoryBean.getObject();
     }
+
     //配置JobFactory,为quartz作业添加自动连接支持
     public final class AutowiringSpringBeanJobFactory extends SpringBeanJobFactory implements
             ApplicationContextAware {
         private transient AutowireCapableBeanFactory beanFactory;
+
         @Override
         public void setApplicationContext(final ApplicationContext context) {
             beanFactory = context.getAutowireCapableBeanFactory();
         }
+
         @Override
         protected Object createJobInstance(final TriggerFiredBundle bundle) throws Exception {
             final Object job = super.createJobInstance(bundle);

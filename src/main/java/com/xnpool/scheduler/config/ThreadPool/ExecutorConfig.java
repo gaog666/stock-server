@@ -1,4 +1,4 @@
-package com.xnpool.scheduler.config;
+package com.xnpool.scheduler.config.ThreadPool;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

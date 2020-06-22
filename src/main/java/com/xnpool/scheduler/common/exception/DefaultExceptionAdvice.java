@@ -23,22 +23,24 @@ public class DefaultExceptionAdvice {
      * 返回状态码:500
      */
     @ExceptionHandler(BusinessException.class)
-    public <T>ResponseResult<T> handleException(BusinessException e) {
-        return new ResponseResult(ResponseResult.FALSE,e.getMessage());
+    public <T> ResponseResult<T> handleException(BusinessException e) {
+        return new ResponseResult(ResponseResult.FALSE, e.getMessage());
     }
+
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
-    public <T>ResponseResult<T> handleException(HttpRequestMethodNotSupportedException e) {
-        return new ResponseResult(ResponseResult.FALSE,"请求方式不支持");
+    public <T> ResponseResult<T> handleException(HttpRequestMethodNotSupportedException e) {
+        return new ResponseResult(ResponseResult.FALSE, "请求方式不支持");
     }
+
     /**
      * 所有异常统一处理
      * 返回状态码:500
      */
     @ExceptionHandler(Exception.class)
-    public <T>ResponseResult<T> handleException(Exception e) {
-        DingdingUtils.robot(DDContant.TYPE_500, SysInfoPrinter.getExceptionInformation(e));
+    public <T> ResponseResult<T> handleException(Exception e) {
+        DingdingUtils.robot(DDContant.TYPE_500, "统一异常处理", SysInfoPrinter.getExceptionInformation(e));
         log.error(SysInfoPrinter.getExceptionInformation(e));
-        return new ResponseResult(ResponseResult.FALSE,"系统异常，请联系管理员");
+        return new ResponseResult(ResponseResult.FALSE, "系统异常，请联系管理员");
     }
 
 }

@@ -22,4 +22,19 @@ where  update_time > DATE_SUB(now(),INTERVAL 1 DAY)  and f116 < 10000000000 and 
 and f137>0 ORDER BY f170
 
 
+select s.f57,s.f58,s.f43 as "昨天",b.f43 as "今天",b.f50 from stock_avg_screen s
+LEFT JOIN stock_base b ON b.f57=s.f57
+where b.f116<10000000000 and b.f162>0 and b.f137>0
+
+
+select s.f57,s.f58,s.f43 as "昨天",b.f43 as "今天",b.f170 "涨幅",s.f168 "换手率",b.f50 "量比" , s.update_time
+from stock_avg_screen s
+LEFT JOIN stock_base b ON b.f57=s.f57
+where s.update_time < "2020-06-02" and s.f168>3;
+
+
+select a.*,f.sumf137,f.numb from stock_avg_screen f INNER JOIN
+(select b.f57 ,b.f58,b.f43 as "今天",b.f170 "涨幅",b.f168 "换手率",b.f50 "量比" ,b.f137/10000 jin
+from stock_base b where b.f137>0 and b.f170<0 and b.f168 >1) a ON f.f57=a.f57 and f.update_time > "2020-06-02"
+
 update stock_base_history set update_time="2020-04-27 16:00:00" where update_time>"2020-04-25 16:00:00"

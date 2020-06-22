@@ -1,6 +1,14 @@
 package com.xnpool.scheduler.quartz.manage;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.xnpool.scheduler.common.utils.ResponseResult;
 import com.xnpool.scheduler.quartz.entity.JobEntity;
+import com.xnpool.scheduler.quartz.mapper.JobEntityMapper;
+import com.xnpool.scheduler.quartz.request.JobRequest;
+import com.xnpool.scheduler.quartz.response.JobListResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.quartz.*;
 import org.quartz.impl.matchers.GroupMatcher;
 import org.slf4j.Logger;
@@ -9,14 +17,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.quartz.SchedulerFactoryBean;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.PostConstruct;
+import javax.swing.text.html.parser.Entity;
+import javax.xml.transform.Result;
+import java.util.List;
 import java.util.Set;
 
 /**
  * Created by EalenXie on 2018/6/4 16:12
  */
+@Slf4j
 @RestController
 public class JobController {
 
@@ -26,7 +39,7 @@ public class JobController {
     @Autowired
     private DynamicJobService jobService;
 
-    //初始化启动所有的Job
+    //初始化启动所有的JobProMqMessageDataListResponse
     @PostConstruct
     public void initialize() {
         try {
@@ -76,34 +89,52 @@ public class JobController {
         }
         return "refresh all jobs : " + result;
     }
+
     /**
      * 清空所有当前scheduler对象下的定时任务【目前只有全局一个scheduler对象】
      */
     @RequestMapping("/clear/all")
-    public void clearAll()  throws SchedulerException {
+    public void clearAll() throws SchedulerException {
         Scheduler scheduler = schedulerFactoryBean.getScheduler();
         scheduler.clear();
     }
+
     /**
      * 暂停定时任务
+     *
      * @throws SchedulerException
      */
     @RequestMapping("/pauseJob/{id}")
-    public String pauseJob(@PathVariable Integer id) throws SchedulerException  {
+    public String pauseJob(@PathVariable Integer id) throws SchedulerException {
         JobEntity entity = jobService.getJobEntityById(id);
         if (entity == null) return "error: id is not exist ";
         Scheduler scheduler = schedulerFactoryBean.getScheduler();
         JobKey jobKey = new JobKey(entity.getJobName(), entity.getJobGroup());
         scheduler.pauseJob(jobKey);
-        return "pauseJob Job : " + entity.getJobName() + "\t jarPath: " + entity.getJarPath() + " success !";
+        log.info("pauseJob Job : " + entity.getJobName() + "\t jarPath: " + entity.getJarPath() + " success !");
+        return "OK";
+    }
+
+    /**
+     * 暂停定时任务 - 多个
+     *
+     * @throws SchedulerException
+     */
+    @RequestMapping("/pauseJob")
+    public ResponseResult pauseJob(@RequestParam(required = true) Integer[] ids) throws SchedulerException {
+        for (Integer id : ids) {
+            pauseJob(id);
+        }
+        return new ResponseResult(ResponseResult.SUCCESS, "success");
     }
 
     /**
      * 恢复定时任务
+     *
      * @throws SchedulerException
      */
     @RequestMapping("/resumeJob/{id}")
-    public String resumeJob(@PathVariable Integer id)  throws SchedulerException {
+    public String resumeJob(@PathVariable Integer id) throws SchedulerException {
         JobEntity entity = jobService.getJobEntityById(id);
         if (entity == null) return "error: id is not exist ";
         Scheduler scheduler = schedulerFactoryBean.getScheduler();

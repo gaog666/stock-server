@@ -8,10 +8,12 @@ public class StringUtils {
     public static boolean isEmpty(String str) {
         return (str == null) || (str.length() == 0) || (str.equals(""));
     }
+
     //去空格
     public static String trim(String str) {
         return str == null ? null : str.trim();
     }
+
     //获取Map参数值
     public static String getMapString(Map<String, String> map) {
         String result = "";
@@ -20,6 +22,7 @@ public class StringUtils {
         }
         return result;
     }
+
     //获取List参数值
     public static String getListString(List<String> list) {
         String result = "";

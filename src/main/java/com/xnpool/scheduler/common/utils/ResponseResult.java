@@ -20,8 +20,9 @@ public class ResponseResult<T> implements Serializable {
     private Integer status;
     private String message;
     private T data;
-    private Map<String,Object> ext;
+    private Map<String, Object> ext;
     private T accesstoken;
+
     public ResponseResult() {
         super();
     }
@@ -32,20 +33,19 @@ public class ResponseResult<T> implements Serializable {
     }
 
 
-
     public ResponseResult(Integer status, String message) {
         this(status);
         setMessage(message);
     }
 
     public ResponseResult(Integer status, String message, T data) {
-        this(status,message);
+        this(status, message);
         setData(data);
     }
+
     public ResponseResult(Integer status, Exception e) {
         this(status, e.getMessage());
     }
-
 
 
     public ResponseResult(Integer status, T data) {
@@ -54,16 +54,17 @@ public class ResponseResult<T> implements Serializable {
     }
 
     public ResponseResult(Integer status, T data, Map<String, Object> ext) {
-        this(status,data);
+        this(status, data);
         setExt(ext);
     }
+
     public ResponseResult(Integer status, T data, T accesstoken) {
-        this(status,data);
+        this(status, data);
         setAccesstoken(accesstoken);
     }
 
     public ResponseResult(Integer status, String message, T data, T accesstoken) {
-        this(status,message,data);
+        this(status, message, data);
         setAccesstoken(accesstoken);
     }
 }

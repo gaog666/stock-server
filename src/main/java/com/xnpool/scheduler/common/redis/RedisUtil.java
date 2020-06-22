@@ -12,6 +12,7 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * Redis工具类
+ *
  * @author
  */
 @Component
@@ -22,6 +23,7 @@ public final class RedisUtil {
 
     /**
      * 指定缓存失效时间
+     *
      * @param key  键
      * @param time 时间(秒)
      * @return
@@ -73,6 +75,7 @@ public final class RedisUtil {
 
     /**
      * 删除缓存
+     *
      * @param key 可以传一个值 或多个
      */
     public void del(String... key) {
@@ -200,6 +203,7 @@ public final class RedisUtil {
 
     /**
      * 获取hashKey对应的所有键值
+     *
      * @param key 键
      * @return 对应的多个键值
      */
@@ -229,6 +233,7 @@ public final class RedisUtil {
 
     /**
      * HashSet 并设置时间
+     *
      * @param key  键
      * @param map  对应多个键值
      * @param time 时间(秒)
@@ -251,6 +256,7 @@ public final class RedisUtil {
 
     /**
      * 向一张hash表中放入数据,如果不存在将创建
+     *
      * @param key   键
      * @param item  项
      * @param value 值
@@ -372,6 +378,7 @@ public final class RedisUtil {
 
     /**
      * 根据value从一个set中查询,是否存在
+     *
      * @param key   键
      * @param value 值
      * @return true 存在 false不存在
@@ -404,6 +411,7 @@ public final class RedisUtil {
 
     /**
      * 将set数据放入缓存
+     *
      * @param key    键
      * @param time   时间(秒)
      * @param values 值 可以是多个
@@ -440,6 +448,7 @@ public final class RedisUtil {
 
     /**
      * 移除值为value的
+     *
      * @param key    键
      * @param values 值 可以是多个
      * @return 移除的个数
@@ -514,6 +523,7 @@ public final class RedisUtil {
 
     /**
      * 将list放入缓存
+     *
      * @param key   键
      * @param value 值
      * @return
@@ -531,6 +541,7 @@ public final class RedisUtil {
 
     /**
      * 将list放入缓存
+     *
      * @param key   键
      * @param value 值
      * @param time  时间(秒)
@@ -551,6 +562,7 @@ public final class RedisUtil {
 
     /**
      * 将list放入缓存
+     *
      * @param key   键
      * @param value 值
      * @return
@@ -568,6 +580,7 @@ public final class RedisUtil {
 
     /**
      * 将list放入缓存
+     *
      * @param key   键
      * @param value 值
      * @param time  时间(秒)
@@ -609,6 +622,7 @@ public final class RedisUtil {
 
     /**
      * 移除N个值为value
+     *
      * @param key   键
      * @param count 移除多少个
      * @param value 值

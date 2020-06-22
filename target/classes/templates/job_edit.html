@@ -1,0 +1,37 @@
+<form action="/job/update" method="get">
+
+    <div class="row">
+        <div class="col-xs-6">ID</div>
+        <div class="col-xs-6"><input type="text" class="form-control" name="id" readonly="readonly"
+                                     value="${bean.id!}"/></div>
+    </div>
+    <div class="row">
+        <div class="col-xs-6">任务名称</div>
+        <div class="col-xs-6"><input type="text" class="form-control" name="jobName" value="${bean.jobName!}"/></div>
+    </div>
+    <div class="row">
+        <div class="col-xs-6">任务分组</div>
+        <div class="col-xs-6"><input type="text" class="form-control" name="jobGroup" value="${bean.jobGroup!}"/></div>
+    </div>
+    <div class="row">
+        <div class="col-xs-6">任务时间</div>
+        <div class="col-xs-6"><input type="text" class="form-control" name="cron" value="${bean.cron!}"/></div>
+    </div>
+    <div class="row">
+        <div class="col-xs-6">任务描述</div>
+        <div class="col-xs-6"><input type="text" class="form-control" name="description" value="${bean.description!}"/>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-6">任务执行</div>
+        <div class="col-xs-6"><input type="text" class="form-control" name="exeClass" value="${bean.exeClass!}"/></div>
+    </div>
+    <div class="row">
+        <div class="col-xs-6">状态</div>
+        <div class="col-xs-6">
+            <input type="radio" name="status" value="OPEN" <#if bean.status=='OPEN'>checked="checked"</#if>/>开启
+            <input type="radio" name="status" value="CLOSE" <#if bean.status=='CLOSE'>checked="checked"</#if>/>关闭
+        </div>
+    </div>
+    <input type="submit" value="提交"/>
+</form>

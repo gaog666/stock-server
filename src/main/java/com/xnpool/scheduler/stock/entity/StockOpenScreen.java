@@ -1,14 +1,13 @@
 /**
  * 版权声明： 版权所有 违者必究 2020
-*/
+ */
 package com.xnpool.scheduler.stock.entity;
 
-import lombok.Data;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
+import lombok.Data;
 
 import java.util.Date;
-import java.math.BigDecimal;
 
 /**
  * <p>Table: stock_open_screen - 开盘前</p>
@@ -17,11 +16,13 @@ import java.math.BigDecimal;
  * @since 2020-05-10 04:22:58
  */
 @Data
-public class StockOpenScreen{
+public class StockOpenScreen {
 
     /** id -  */
-	@TableId(type = IdType.AUTO)
+    @TableId(type = IdType.AUTO)
     private Long id;
+
+    private int type;
 
     /** f57 - 股票代码 */
     private String f57;

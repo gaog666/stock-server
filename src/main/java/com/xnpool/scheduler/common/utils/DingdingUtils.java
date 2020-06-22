@@ -11,61 +11,67 @@ import java.util.*;
 
 public class DingdingUtils {
 
-    //type 1:手机客户端闪退bug  2:报表  3: 钱  4:java后台bug 5 物流
-    public static void robot(int type, String content) {
+    /**
+     * type 钉钉群 1:stock  2:报表  3: 钱  4:java后台bug 5 物流
+     * biz 业务
+     * content  内容
+     */
+    public static void robot(int type, String biz, String content) {
 
         // 获取IP地址
-        String ip ="";
-        String hj="环境:";
+        String ip = "";
+        String hj = "环境:";
 
         try {
             ip = InetAddress.getLocalHost().getHostAddress();
-            if(StringUtils.isNotBlank(ip)){
-                if(ip.equals("127.0.0.1")){
-                    hj=hj+"(本机)";
-                }else if(ip.equals("172.16.107.16")){
-                    hj=hj+"(生产nginx)";
-                }else if(ip.startsWith("192")){
-                    hj=hj+"(本地)";
-                }else {
-                    hj=hj+"(测试)";
+            if (StringUtils.isNotBlank(ip)) {
+                if (ip.equals("127.0.0.1")) {
+                    hj = hj + "(本机)";
+                } else if (ip.equals("172.16.107.16")) {
+                    hj = hj + "(生产nginx)";
+                } else if (ip.startsWith("192")) {
+                    hj = hj + "(本地)";
+                } else {
+                    hj = hj + "(测试)";
                 }
             }
         } catch (UnknownHostException e) {
             e.printStackTrace();
         }
-        content = "养乐多提醒("+ip+")\n"+"当前价格,涨幅,量比,换手率,净流入占比"+"\n时间:"+DateUtil.format(new Date(),DateUtil.FORMAT_LONG)+"\n"+content;
+        String startWith = "";
+        if(type==1){
+            startWith ="养乐多";
+        }else {
+            startWith ="交易";
+        }
+        content = startWith+"提醒(" + ip + ")\n" + "时间:" + DateUtil.format(new Date(), DateUtil.FORMAT_LONG) + "\n业务：" +
+                biz + "\n" + content;
 
         //是否通知所有人
         boolean isAtAll = false;
         //通知具体人的手机号码列表
         List<String> mobileList = new ArrayList();
 
-        //钉钉机器人消息内容
-//   String content = "小哥，你好！";
-        //组装请求内容
-//   String reqStr = buildReqStr(content, isAtAll, mobileList);
-
         String reqStr = buildReqStr(content, isAtAll, mobileList);
-        String url =getRobotUrl(type);
-        if(StringUtils.isNotBlank(url)){
+        String url = getRobotUrl(type);
+        if (StringUtils.isNotBlank(url)) {
             try {
                 String result = postJson(url, reqStr);
-                System.out.println("result == " + result);
+//                System.out.println("result == " + result);
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
     }
 
-    private static String  getRobotUrl(int type){
+    private static String getRobotUrl(int type) {
         String url = null;
         switch (type) {
-            case 1://小金bug
+            case 1:  // 关键字：养乐多
                 url = "https://oapi.dingtalk.com/robot/send?access_token=10fb096873e24631e8bc7a7cdb2576d5e86789ae7ec56bc774c99651bf24390a";
                 break;
-            case 2:
-                url = "https://oapi.dingtalk.com/robot/send?access_token=";
+            case 2:  // 关键字：交易
+                url = "https://oapi.dingtalk.com/robot/send?access_token=51ecf41a8d9adabc15301e9fcf9daf977d6e49ec4b70317028d887cfa4f37692";
                 break;
 
             default:
@@ -83,8 +89,10 @@ public class DingdingUtils {
         }
         return body;
     }
+
     /**
      * 组装请求报文
+     *
      * @param content
      * @return
      */
@@ -108,7 +116,4 @@ public class DingdingUtils {
         return JSON.toJSONString(reqMap);
     }
 
-    public static void main(String[] args) {
-        robot(DDContant.TYPE_1, "test");
-    }
 }
