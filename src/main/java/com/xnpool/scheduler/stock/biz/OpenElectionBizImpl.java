@@ -3,21 +3,19 @@
  */
 package com.xnpool.scheduler.stock.biz;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.xnpool.scheduler.common.contants.DDContant;
 import com.xnpool.scheduler.common.redis.RedisKey;
 import com.xnpool.scheduler.common.redis.RedisUtil;
 import com.xnpool.scheduler.common.utils.DingdingUtils;
+import com.xnpool.scheduler.common.utils.NumberUtil;
 import com.xnpool.scheduler.config.sysParam.ParamConstant;
 import com.xnpool.scheduler.stock.constant.StockConstant;
-import com.xnpool.scheduler.stock.entity.StockAvgScreen;
-import com.xnpool.scheduler.stock.entity.StockBase;
-import com.xnpool.scheduler.stock.entity.StockCustomCode;
-import com.xnpool.scheduler.stock.entity.StockOpenScreen;
+import com.xnpool.scheduler.stock.entity.*;
 import com.xnpool.scheduler.stock.entity.dto.AvgDto;
-import com.xnpool.scheduler.stock.service.StockAvgScreenService;
-import com.xnpool.scheduler.stock.service.StockBaseHistoryService;
-import com.xnpool.scheduler.stock.service.StockCustomCodeService;
-import com.xnpool.scheduler.stock.service.StockOpenScreenService;
+import com.xnpool.scheduler.stock.service.*;
+import com.xnpool.scheduler.stock.trans.UserTrans;
+import com.xnpool.scheduler.stock.utils.BizUtil;
 import com.xnpool.scheduler.stock.utils.StockHttpUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -45,6 +43,10 @@ public class OpenElectionBizImpl implements OpenElectionBiz {
     private StockAvgScreenService avgScreenService;
     @Autowired
     private StockCustomCodeService customCodeService;
+    @Autowired
+    private UserTrans userTrans;
+    @Autowired
+    private STransBusService busService;
 
     @Override
     public void screen(String key, String url) {
@@ -99,10 +101,13 @@ public class OpenElectionBizImpl implements OpenElectionBiz {
 
     @Override
     public void screenCustom() {
+
         List<StockCustomCode> customCodes = customCodeService.list();
         if(customCodes==null || customCodes.size()==0) return;
+
         Map<String, String> maps = new HashMap<>();
         Map<String, String> maps1 = new HashMap<>();
+
         for(StockCustomCode item:customCodes){
             String url = "";
             if (item.getF57().startsWith("0") || item.getF57().startsWith("3")) {
@@ -119,15 +124,68 @@ public class OpenElectionBizImpl implements OpenElectionBiz {
                     .append("%,涨跌:").append(base.getF169()).append("\n");
 
             maps1.put(base.getF58(), buffer.toString());
-            int abs = Double.valueOf(base.getF170()).intValue();
-            if(abs==0) continue;
 
-            Object object = redisUtil.get(RedisKey.REMIND + base.getF57());
-            if(object!=null && (Integer)object==abs){
-               continue;
+            List<STransBus> buyList = busService.list(
+                    new QueryWrapper<STransBus>().eq("trans_type",StockConstant.TRANS_TYPE_1)
+                            .eq("f57",item.getF57())
+                );
+            int busNum =0;  // 数量
+            int transType =0;  // 买卖类型
+            BigDecimal minPrice = null; //买入价格
+            List<Long> busIds = new ArrayList<>();
+            if(buyList!=null && buyList.size()>0) {
+                for (STransBus bus : buyList) {
+                    if (new BigDecimal(base.getF43()).compareTo(bus.getPresale()) > 0) {
+                        //卖出
+                        busNum = busNum + bus.getDealNum();
+                        transType = StockConstant.TRANS_TYPE_2;
+                        busIds.add(bus.getId());
+                    }
+                    if (minPrice == null) minPrice = bus.getPrice();
+                    if (bus.getPrice().compareTo(minPrice) < 0) {
+                        minPrice = bus.getPrice();
+                    }
+                }
+                //减去百分之一
+                minPrice = minPrice.subtract(NumberUtil.percent(minPrice, 1));
+                if (new BigDecimal(base.getF43()).compareTo(minPrice) < 0) {
+                    busNum=1000;
+                    transType = StockConstant.TRANS_TYPE_1;
+                }
+            }else{
+                List<STransBus> sellList = busService.list(
+                        new QueryWrapper<STransBus>().eq("trans_type",StockConstant.TRANS_TYPE_2)
+                                .eq("f57",item.getF57())
+                                .orderByDesc("id")
+                    // 最后一次卖出价格
+                    );
+                    if(sellList==null || sellList.size()==0){
+                        //初始化
+                        busNum=1000;
+                        transType=StockConstant.TRANS_TYPE_1;
+                    }else{
+                    BigDecimal olderPrice = sellList.get(0).getPrice();
+                    //减去百分之一
+                    olderPrice = olderPrice.subtract(NumberUtil.percent(olderPrice, 1));
+                    if (new BigDecimal(base.getF43()).compareTo(olderPrice) < 0) {
+                        busNum=1000;
+                        transType = StockConstant.TRANS_TYPE_1;
+                    }
+                }
             }
-            redisUtil.set(RedisKey.REMIND + base.getF57(), abs,RedisKey.REMIND_EXPIRE);
-            maps.put(base.getF58(), buffer.toString());
+            // 主动买入
+            Object object = redisUtil.get(RedisKey.BUY+base.getF57());
+            if(object!=null){
+                busNum=1000;
+                base.setF43(object+"");
+                transType=StockConstant.TRANS_TYPE_1;
+                redisUtil.del(RedisKey.BUY+base.getF57());
+            }
+            if(busNum>0){
+                //交易
+               userTrans.trans1(base.getF57(),base.getF58(),new BigDecimal(base.getF43()),busNum ,transType,busIds);
+               maps.put(base.getF58(), buffer.toString());
+            }
         }
         if(maps1.size()>0){
             DingdingUtils.robot(DDContant.TYPE_1, "报价", maps1.toString());

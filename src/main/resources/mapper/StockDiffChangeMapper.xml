@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xnpool.scheduler.stock.mapper.StockDiffChangeMapper">
+
+	<insert id="insertDiffChange" parameterType="java.util.List">
+		INSERT INTO stock_diff_change (
+		f57, f58, dt, tm, d1, d2, d3, d4, d5, d6,ut
+		)
+		VALUES
+		<foreach collection ="list" item="info" index= "index" separator =",">
+			(
+			#{info.f57}, #{info.f58},#{info.dt},#{info.tm},#{info.d1},#{info.d2},#{info.d3},#{info.d4},
+			#{info.d5},#{info.d6},now()
+			)
+		</foreach>
+		ON DUPLICATE KEY UPDATE
+		d1=values(d1),d2=values(d2),d3=values(d3),d4=values(d4),d5=values(d5),
+		d6=values(d6),ut=values(ut)
+	</insert>
+</mapper>

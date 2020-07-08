@@ -26,7 +26,9 @@ public class StockCustomCode{
     /** f57 - 股票代码 */
     private String f57;
 
-    private String price;
+    private BigDecimal price;
+
+    private BigDecimal presale;
 
     /** update_time -  */
     private Date updateTime;

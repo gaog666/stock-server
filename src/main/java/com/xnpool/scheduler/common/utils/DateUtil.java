@@ -13,9 +13,6 @@ import java.util.*;
  */
 public class DateUtil {
 
-    public static String DEFAULT = "dd-MM-yyyy HH:mm:ss";
-
-    public static String SHORT_DEFAULT = "dd-MM-yyyy";
     /**
      * 英文简写（默认）如：2010-12-01
      */
@@ -57,20 +54,6 @@ public class DateUtil {
      * 日期
      */
     public static String FORMAT_INT_MONTH = "yyyyMM";
-    /**
-     * 英文简写（默认）如：12.01
-     */
-    public static String FORMAT_Md = "MM.dd";
-
-    /**
-     * 英文简写（默认）如：2010.12.01 12:01
-     */
-    public static String FORMAT_yMdHm = "yyyy.MM.dd HH:mm";
-
-    /**
-     * 英文简写（默认）如：2018.12.01
-     */
-    public static String FORMAT_yMd = "yyyy.MM.dd";
 
 
     /**
@@ -99,7 +82,7 @@ public class DateUtil {
 
     /**
      * 根据预设格式返回当前日期
-     *
+     * yyyy-MM-dd HH:mm:ss
      * @return
      */
     public static String getNow() {
@@ -118,9 +101,6 @@ public class DateUtil {
 
     /**
      * 使用预设格式格式化日期
-     *
-     * @param date
-     * @return
      */
     public static String format(Date date) {
         return format(date, getDatePattern());
@@ -128,10 +108,6 @@ public class DateUtil {
 
     /**
      * 使用用户格式格式化日期
-     *
-     * @param date    日期
-     * @param pattern 日期格式
-     * @return
      */
     public static String format(Date date, String pattern) {
         String returnValue = "";
@@ -144,9 +120,6 @@ public class DateUtil {
 
     /**
      * 使用预设格式提取字符串日期
-     *
-     * @param strDate 日期字符串
-     * @return
      */
     public static Date parse(String strDate) {
         return parse(strDate, getDatePattern());
@@ -154,10 +127,6 @@ public class DateUtil {
 
     /**
      * 使用用户格式提取字符串日期
-     *
-     * @param strDate 日期字符串
-     * @param pattern 日期格式
-     * @return
      */
     public static Date parse(String strDate, String pattern) {
         SimpleDateFormat df = new SimpleDateFormat(pattern);
@@ -327,23 +296,6 @@ public class DateUtil {
     }
 
     /**
-     * 补位
-     * 如果num位数小于figure自定的位数，则在左边补0；如果大于，则不变
-     * 例如：
-     * figure = 4 时，num = 12，返回0012；num = 1100时，返回1100； num = 11001时，返回11001
-     *
-     * @param num
-     * @param figure
-     * @return
-     */
-    public static String fillGap(int num, int figure) {
-        NumberFormat formatter = NumberFormat.getNumberInstance();
-        formatter.setMinimumIntegerDigits(figure);
-        formatter.setGroupingUsed(false);
-        return formatter.format(num);
-    }
-
-    /**
      * 获取周一
      *
      * @param time
@@ -465,10 +417,6 @@ public class DateUtil {
         return cal.getTime();
     }
 
-    public static Boolean dateCompare(Date date1, Date date2) {
-        return date1.getTime() - date2.getTime() > 0;
-    }
-
     public static Date getTimeMorning() {
         Calendar cal = Calendar.getInstance();
         cal.set(Calendar.HOUR_OF_DAY, 0);
@@ -491,18 +439,50 @@ public class DateUtil {
         calendar.set(Calendar.MILLISECOND, 0);
         return calendar.getTime();
     }
+    /**
+     * 周一到周五 9:30 - 15:00
+     * 判断时间是否在一个时间段内
+     */
+    public static boolean isBetween(Date now) {
+        Calendar calendar= Calendar.getInstance();
+        calendar.setTime(now);
+        int week = calendar.get(Calendar.DAY_OF_WEEK) - 1;
+        if(!(week ==6 || week ==7)) {
+            // 9:25 - 15:00
+            calendar.set(Calendar.HOUR_OF_DAY,9);
+            calendar.set(Calendar.MINUTE,30);
+            Date start = calendar.getTime();
+            calendar.set(Calendar.HOUR_OF_DAY,15);
+            calendar.set(Calendar.MINUTE,00);
+            Date end =calendar.getTime();
+            if(now.after(start)&& now.before(end)){
+               return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     *  获取上月第一天
+     *  2020-05-01 00:00:00
+     */
+    public static String getFirstDayOfMonth(int month) {
+        Calendar cal = Calendar.getInstance();
+        // 设置月份
+        cal.set(Calendar.MONTH, month);
+        // 获取某月最小天数
+        int firstDay = cal.getActualMinimum(Calendar.DAY_OF_MONTH);
+        // 设置日历中月份的最小天数
+        cal.set(Calendar.DAY_OF_MONTH, firstDay);
+        // 格式化日期
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String firstDayOfMonth = sdf.format(cal.getTime())+"T00:00:00";
+        return firstDayOfMonth;
+    }
 
     public static void main(String[] args) {
-
-        List<Object> list = new ArrayList<>();
-        List<Object> list1 = new ArrayList<>(2);
-        list1.add("a");
-        list1.add(1);
-        list.add(list1);
-        List<Object> list2 = new ArrayList<>();
-        list2.add("a");
-        list2.add(1);
-        list.add(list2);
-        System.out.println(JSON.toJSONString(list));
+        Calendar calendar= Calendar.getInstance();
+        calendar.set(Calendar.MONTH, calendar.get(Calendar.MONTH) - 1);
+        System.out.println(getFirstDayOfMonth(calendar.get(Calendar.MONTH)));
     }
 }

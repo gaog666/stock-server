@@ -7,4 +7,8 @@ public class StockConstant {
     public static int SCREEN_TYPE_1 = 1; //早盘选股
     public static int SCREEN_TYPE_2 = 2; //尾盘选股
 
+     public static int TRANS_TYPE_1 = 1; //买入
+     public static int TRANS_TYPE_2 = 2; //卖出
+
+
 }

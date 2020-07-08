@@ -1,6 +1,8 @@
 package com.xnpool.scheduler.quartz.job;
 
+import com.xnpool.scheduler.common.utils.DateUtil;
 import com.xnpool.scheduler.stock.biz.OpenElectionBiz;
+import lombok.extern.slf4j.Slf4j;
 import org.quartz.DisallowConcurrentExecution;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
@@ -14,6 +16,7 @@ import java.util.Date;
 /**
  * 自定义 代码扫描
  */
+@Slf4j
 @Component
 @DisallowConcurrentExecution
 public class SchedulerQuartzJob5 implements Job {
@@ -31,22 +34,8 @@ public class SchedulerQuartzJob5 implements Job {
         long startTime = System.currentTimeMillis();
         // TODO 业务
         try {
-            Calendar calendar= Calendar.getInstance();
-            calendar.setTime(new Date());
-            int week = calendar.get(Calendar.DAY_OF_WEEK) - 1;
-            if(!(week ==6 || week ==7)) {
-                // 9:25 - 15:00
-                calendar.set(Calendar.HOUR,9);
-                calendar.set(Calendar.MINUTE,25);
-                Date start = calendar.getTime();
-                calendar.set(Calendar.HOUR,15);
-                calendar.set(Calendar.MINUTE,00);
-                Date end =calendar.getTime();
-                Date now = new Date();
-
-                if(now.after(start)&& now.before(end)){
-                    openElectionBiz.screenCustom();
-                }
+            if(DateUtil.isBetween(new Date())){
+                openElectionBiz.screenCustom();
             }
         } catch (Exception e) {
             e.printStackTrace();

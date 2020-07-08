@@ -43,17 +43,20 @@ public class StockBaseServiceImpl extends ServiceImpl<StockBaseMapper, StockBase
     public String readStock(String codeKey) {
         Set<Object> objects = redisUtil.sGet(codeKey);
         Set<StockBase> list = new HashSet<>();
-        objects.parallelStream().forEach(item -> {
-            StockBase base = StockHttpUtil.getStockBase(item, paramConstant.getStockUrl0());
-            base.setUpdateTime(new Date());
-            if (StringUtils.equals(base.getF43(), "-")) {
-                redisUtil.setRemove(StockRedisKey.STOCK_BASE_CODE_0, base.getF57());
-            } else {
+        for(Object item:objects){
+            try{
+                StockBase base = StockHttpUtil.getStockBase(item, paramConstant.getStockUrl0());
+                base.setUpdateTime(new Date());
+                if (StringUtils.equals(base.getF43(), "-")) {
+                    redisUtil.setRemove(StockRedisKey.STOCK_BASE_CODE_0, base.getF57());
+                } else {
+                    list.add(base);
+                }
                 list.add(base);
+            }catch (Exception e){
+                e.printStackTrace();
             }
-            list.add(base);
-
-        });
+        }
         this.saveOrUpdateBatch(list);
         return null;
     }

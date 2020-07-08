@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xnpool.scheduler.stock.mapper.STransFlowMapper">
+	<resultMap id="BaseResultMap" type="com.xnpool.scheduler.stock.entity.STransFlow">
+		<id column="id" property="id" jdbcType="BIGINT" />
+		<result column="uid" property="uid" jdbcType="BIGINT" />
+		<result column="f57" property="f57" jdbcType="VARCHAR" />
+		<result column="f58" property="f58" jdbcType="VARCHAR" />
+		<result column="f43" property="f43" jdbcType="VARCHAR" />
+		<result column="trans_type" property="transType" jdbcType="INTEGER" />
+		<result column="deal_num" property="dealNum" jdbcType="INTEGER" />
+		<result column="deal_money" property="dealMoney" jdbcType="DECIMAL" />
+		<result column="before_amount_s" property="beforeAmountS" jdbcType="DECIMAL" />
+		<result column="after_amount_s" property="afterAmountS" jdbcType="DECIMAL" />
+		<result column="before_amount_u" property="beforeAmountU" jdbcType="DECIMAL" />
+		<result column="after_amount_u" property="afterAmountU" jdbcType="DECIMAL" />
+		<result column="ut" property="ut" jdbcType="TIMESTAMP" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		id,
+		uid,
+		f57,
+		f58,
+		f43,
+		trans_type,
+		deal_num,
+		deal_money,
+		before_amount_s,
+		after_amount_s,
+		before_amount_u,
+		after_amount_u,
+		ut
+	</sql>
+	<sql id="Example_Where_Clause">
+		<where>
+				<if test="id != null">
+					id = #{id,jdbcType=BIGINT}
+				</if>
+				<if test="uid != null">
+					and uid = #{uid,jdbcType=BIGINT}
+				</if>
+				<if test="f57 != null and f57 !=''">
+					and f57 = #{f57,jdbcType=VARCHAR}
+				</if>
+				<if test="f58 != null and f58 !=''">
+					and f58 = #{f58,jdbcType=VARCHAR}
+				</if>
+				<if test="f43 != null and f43 !=''">
+					and f43 = #{f43,jdbcType=VARCHAR}
+				</if>
+				<if test="transType != null">
+					and trans_type = #{transType,jdbcType=INTEGER}
+				</if>
+				<if test="dealNum != null">
+					and deal_num = #{dealNum,jdbcType=INTEGER}
+				</if>
+				<if test="dealMoney != null">
+					and deal_money = #{dealMoney,jdbcType=DECIMAL}
+				</if>
+				<if test="beforeAmountS != null">
+					and before_amount_s = #{beforeAmountS,jdbcType=DECIMAL}
+				</if>
+				<if test="afterAmountS != null">
+					and after_amount_s = #{afterAmountS,jdbcType=DECIMAL}
+				</if>
+				<if test="beforeAmountU != null">
+					and before_amount_u = #{beforeAmountU,jdbcType=DECIMAL}
+				</if>
+				<if test="afterAmountU != null">
+					and after_amount_u = #{afterAmountU,jdbcType=DECIMAL}
+				</if>
+				<if test="ut != null">
+					and ut = #{ut,jdbcType=TIMESTAMP}
+				</if>
+    </where>
+	</sql>
+	
+</mapper>

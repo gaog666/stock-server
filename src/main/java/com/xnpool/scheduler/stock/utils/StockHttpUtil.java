@@ -1,13 +1,24 @@
 package com.xnpool.scheduler.stock.utils;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.xnpool.scheduler.common.utils.DateUtil;
 import com.xnpool.scheduler.common.utils.HttpUtil;
+import com.xnpool.scheduler.stock.entity.StockAchievement;
 import com.xnpool.scheduler.stock.entity.StockBase;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.Calendar;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.regex.Pattern;
 
+@Slf4j
 public class StockHttpUtil {
 
     public static StockBase getStockBase(Object item, String stockUrl) {
@@ -21,17 +32,39 @@ public class StockHttpUtil {
         return JSONObject.parseObject(jsonStock, StockBase.class);
     }
 
+    /**
+     * 冒泡排序
+     * @param arr
+     */
+    private static void bubbleSort(int[] arr) {
+        if(arr==null || arr.length < 2 ){
+            return;
+        }
+        for (int i = 0; i < arr.length - 1; i++) {
+            for (int j = 0; j < arr.length -1; j++) {   // 这里说明为什么需要-1
+                if (arr[j] > arr[j + 1]) {
+                    int temp = arr[j];
+                    arr[j] = arr[j + 1];
+                    arr[j + 1] = temp;
+                }
+                System.out.println("i="+i+",j="+j+":内层:"+JSON.toJSONString(arr));
+            }
+            System.out.println(i+":外层:"+JSON.toJSONString(arr));
+            System.out.println("外层:-------------------------------");
+        }
+    }
+
     public static void main(String[] args) {
-        String[] weekDays = {"星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"};
-        Calendar calendar= Calendar.getInstance();
-        System.out.println(calendar.get(Calendar.DAY_OF_WEEK));
-        System.out.println("今天是"+weekDays[calendar.get(Calendar.DAY_OF_WEEK)-1]);
+//        int[] arr ={5,4,3,2,1};
+//        bubbleSort(arr);
 
+        double dou = 3.1487426;
+        String douStr = String.format("%.2f", dou);
+        System.out.println(douStr);
 
-        String a = "-0.55";
-        Double b = 1.95D;
-        int c = b.intValue();
-        System.out.println(c);
+        BigDecimal a = new BigDecimal("16956.85").divide(new BigDecimal(100));
+        BigDecimal b =a.setScale(2, RoundingMode.HALF_UP);//保留两位小数
+        System.out.println(b);
     }
 
 }

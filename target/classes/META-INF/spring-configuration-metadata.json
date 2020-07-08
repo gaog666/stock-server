@@ -28,6 +28,26 @@
       "sourceType": "com.xnpool.scheduler.config.sysParam.ParamConstant"
     },
     {
+      "name": "param.broker-achievement-url",
+      "type": "java.lang.String",
+      "sourceType": "com.xnpool.scheduler.config.sysParam.ParamConstant"
+    },
+    {
+      "name": "param.diff-change-url",
+      "type": "java.lang.String",
+      "sourceType": "com.xnpool.scheduler.config.sysParam.ParamConstant"
+    },
+    {
+      "name": "param.increase",
+      "type": "java.lang.Integer",
+      "sourceType": "com.xnpool.scheduler.config.sysParam.ParamConstant"
+    },
+    {
+      "name": "param.industry-capital-url",
+      "type": "java.lang.String",
+      "sourceType": "com.xnpool.scheduler.config.sysParam.ParamConstant"
+    },
+    {
       "name": "param.list",
       "type": "java.util.List<java.lang.String>",
       "sourceType": "com.xnpool.scheduler.config.sysParam.ParamConstant"
@@ -50,6 +70,11 @@
     {
       "name": "param.stock-url6",
       "type": "java.lang.String",
+      "sourceType": "com.xnpool.scheduler.config.sysParam.ParamConstant"
+    },
+    {
+      "name": "param.trans-num",
+      "type": "java.lang.Integer",
       "sourceType": "com.xnpool.scheduler.config.sysParam.ParamConstant"
     },
     {

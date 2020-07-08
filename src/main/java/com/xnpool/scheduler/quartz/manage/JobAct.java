@@ -3,6 +3,8 @@ package com.xnpool.scheduler.quartz.manage;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.xnpool.scheduler.common.redis.RedisKey;
+import com.xnpool.scheduler.common.redis.RedisUtil;
 import com.xnpool.scheduler.quartz.entity.JobEntity;
 import com.xnpool.scheduler.quartz.mapper.JobEntityMapper;
 import com.xnpool.scheduler.quartz.request.JobRequest;
@@ -22,6 +24,19 @@ public class JobAct {
 
     @Autowired
     private JobEntityMapper jobMapper;
+    @Autowired
+    private RedisUtil redisUtil;
+
+    /**
+     * 任务列表
+     */
+    @RequestMapping("/buy")
+    @ResponseBody
+    public Object jobList(String code,String price) {
+        log.info("buy..."+code+".........");
+        redisUtil.set(RedisKey.BUY+code,price);
+        return true;
+    }
 
     /**
      * 任务列表

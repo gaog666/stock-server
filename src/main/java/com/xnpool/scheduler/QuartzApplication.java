@@ -14,9 +14,6 @@ import java.util.TimeZone;
 public class QuartzApplication {
 
     public static void main(String[] args) {
-        //设置全局时区，且设置了json 时区
-        TimeZone.setDefault(TimeZone.getTimeZone("GMT+5"));
-
         SpringApplication.run(QuartzApplication.class, args);
     }
 

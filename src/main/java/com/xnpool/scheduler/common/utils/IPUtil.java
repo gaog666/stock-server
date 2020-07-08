@@ -9,10 +9,8 @@ import java.net.UnknownHostException;
 public class IPUtil {
 
     /**
-     * 获取Ip地址
-     *
+     * 拥有众多反向代理地址，，这里是获取真实Ip地址
      * @param request
-     * @return
      */
     public static String getIpAddr(HttpServletRequest request) {
         String Xip = request.getHeader("X-Real-IP");

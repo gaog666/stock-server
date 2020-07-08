@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xnpool.scheduler.stock.mapper.StockAchievementMapper">
+
+    <insert id="insertAchievement" parameterType="java.util.List">
+        INSERT INTO stock_achievement (
+        f57,f58,p1,p2, p3, p4, p5,p6, p7,st,et,ut
+        )
+        VALUES
+        <foreach collection ="list" item="info" index= "index" separator =",">
+            (
+            #{info.f57}, #{info.f58},#{info.p1},#{info.p2},#{info.p3},#{info.p4},#{info.p5},#{info.p6},
+            #{info.p7},#{info.st},#{info.et},now()
+            )
+        </foreach>
+        ON DUPLICATE KEY UPDATE
+        p1=values(p1),p2=values(p2),p3=values(p3),p4=values(p4),p5=values(p5),
+        p6=values(p6), p7=values(p7),ut=values(ut)
+    </insert>
+</mapper>

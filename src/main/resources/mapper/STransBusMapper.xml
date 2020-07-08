@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xnpool.scheduler.stock.mapper.STransBusMapper">
+	<resultMap id="BaseResultMap" type="com.xnpool.scheduler.stock.entity.STransBus">
+		<id column="id" property="id" jdbcType="BIGINT" />
+		<result column="uid" property="uid" jdbcType="BIGINT" />
+		<result column="f57" property="f57" jdbcType="VARCHAR" />
+		<result column="f58" property="f58" jdbcType="VARCHAR" />
+		<result column="price" property="price" jdbcType="DECIMAL" />
+		<result column="presale" property="presale" jdbcType="DECIMAL" />
+		<result column="trans_type" property="transType" jdbcType="INTEGER" />
+		<result column="deal_num" property="dealNum" jdbcType="INTEGER" />
+		<result column="ut" property="ut" jdbcType="TIMESTAMP" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		id,
+		uid,
+		f57,
+		f58,
+		price,
+		presale,
+		trans_type,
+		deal_num,
+		ut
+	</sql>
+	<sql id="Example_Where_Clause">
+		<where>
+				<if test="id != null">
+					id = #{id,jdbcType=BIGINT}
+				</if>
+				<if test="uid != null">
+					and uid = #{uid,jdbcType=BIGINT}
+				</if>
+				<if test="f57 != null and f57 !=''">
+					and f57 = #{f57,jdbcType=VARCHAR}
+				</if>
+				<if test="f58 != null and f58 !=''">
+					and f58 = #{f58,jdbcType=VARCHAR}
+				</if>
+				<if test="price != null">
+					and price = #{price,jdbcType=DECIMAL}
+				</if>
+				<if test="presale != null">
+					and presale = #{presale,jdbcType=DECIMAL}
+				</if>
+				<if test="transType != null">
+					and trans_type = #{transType,jdbcType=INTEGER}
+				</if>
+				<if test="dealNum != null">
+					and deal_num = #{dealNum,jdbcType=INTEGER}
+				</if>
+				<if test="ut != null">
+					and ut = #{ut,jdbcType=TIMESTAMP}
+				</if>
+    </where>
+	</sql>
+
+	<update id="updateTransType">
+		update s_trans_bus SET trans_type=#{transType}
+		where id in
+		<foreach collection="busIds" item="item" index="index" open="(" close=")" separator=",">
+			#{item}
+		</foreach>
+	</update>
+</mapper>
