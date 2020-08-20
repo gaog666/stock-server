@@ -57,7 +57,9 @@ public class StockBaseServiceImpl extends ServiceImpl<StockBaseMapper, StockBase
                 e.printStackTrace();
             }
         }
-        this.saveOrUpdateBatch(list);
+        if(list.size()>0){
+            this.saveOrUpdateBatch(list);
+        }
         return null;
     }
 

@@ -31,6 +31,7 @@ public class RedisConfig extends CachingConfigurerSupport {
         rf.setDatabase(jedisConfig.database);
         rf.setHostName(jedisConfig.host);
         rf.setPort(jedisConfig.port);
+        rf.setPassword(jedisConfig.password);
         int to = Integer.parseInt(jedisConfig.timeout.substring(0, jedisConfig.timeout.length() - 2));
 
         JedisClientConfiguration.JedisPoolingClientConfigurationBuilder jpb =

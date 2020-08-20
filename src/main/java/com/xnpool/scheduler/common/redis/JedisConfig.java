@@ -11,6 +11,8 @@ public class JedisConfig {
     public String host;
     @Value("${spring.redis.port}")
     public int port;
+    @Value("${spring.redis.password}")
+    public String password;
     @Value("${spring.redis.database}")
     public int database;
     @Value("${spring.redis.jedis.pool.max-idle}")

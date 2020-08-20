@@ -8,7 +8,6 @@ import org.springframework.boot.web.servlet.ServletComponentScan;
 
 import java.util.TimeZone;
 
-@EnableAutoConfiguration
 @ServletComponentScan // 扫描到自己编写的servlet和filter
 @SpringBootApplication(exclude = {DataSourceAutoConfiguration.class}) ///*scanBasePackages="com.xnpool.scheduler",*/
 public class QuartzApplication {
